@@ -16,7 +16,7 @@ declare(strict_types=1);
 			$this->RegisterPropertyString("Start_Day", "");
 			
 			// Timer
-			$this->RegisterTimer("GET_CONTENT", 900, "DC_Login();");
+			$this->RegisterTimer("GET_CONTENT", 900000, "DC_Login();");
 
 			// Variable
 			$this->RegisterVariableFloat("ENERGY_SUMMARY", $this->Translate("Energy consumption total:"), "", 0);
