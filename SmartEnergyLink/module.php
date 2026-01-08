@@ -119,10 +119,16 @@ declare(strict_types=1);
 			$this->SetValue("ENERGY_SUMMARY", $energySummary["summary"]["wattHours"]);
 			$this->SetValue("SOLAR_ENERGY_TOTAL", $energySummary["summary"]["ownConsumption"]);
 			$this->SetValue("SOLAR_ENERGY_TOTAL_PERCENT", $energySummary["summary"]["autarchy"]);
+		}
+
+		public function GetEnergyToday() {
+			$currentYear = date("Y");
+			$currentMonth = date("m");
+			$currentDay = date("d");
 			
 			$energyToday = $this->GetContent("sel/member-autarchy-electricity/?from={$currentYear}-{$currentMonth}-{$currentDay}&to={$currentYear}-{$currentMonth}-{$currentDay}&ts_format=ms&community=548");
 			$this->SetValue("ENERGY_TODAY", $energyToday["summary"]["wattHours"]);
-			$this->SetValue("SOLAR_ENERGY_TODAY", $energySummary["summary"]["ownConsumption"]);
-			$this->SetValue("SOLAR_ENERGY_TODAY_PERCENT", $energySummary["summary"]["autarchy"]);
+			$this->SetValue("SOLAR_ENERGY_TODAY", $energyToday["summary"]["ownConsumption"]);
+			$this->SetValue("SOLAR_ENERGY_TODAY_PERCENT", $energyToday["summary"]["autarchy"]);
 		}
 	}
