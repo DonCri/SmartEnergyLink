@@ -1,0 +1,12 @@
+{
+    "id": "{DE524812-BA06-E6E8-0673-F4DD44C109C1}",
+    "name": "SmartEnergyLink",
+    "author": "DonCri",
+    "url": "",
+    "compatibility": {
+        "version": "7.1"
+    },
+    "version": "1.0",
+    "build": 1,
+    "date": 20250801
+}

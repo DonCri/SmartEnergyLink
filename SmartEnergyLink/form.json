@@ -1,0 +1,13 @@
+{
+    "elements": [
+        {"type": "Label", "caption": "Logindaten für Smart Energy Link"},
+        {"type": "ValidationTextBox", "name": "LoginMail", "caption": "E-Mail"},
+        {"type": "PasswordTextBox", "name": "Password", "caption": "Password"},
+        {"type": "Label", "caption": "Startdaten für das auslesen"},
+        {"type": "ValidationTextBox", "name": "Start_Year", "caption": "Jahr"},
+        {"type": "ValidationTextBox", "name": "Start_Month", "caption": "Monat"},
+        {"type": "ValidationTextBox", "name": "Start_Day", "caption": "Tag"}
+    ],
+    "actions": [],
+    "status": []
+}

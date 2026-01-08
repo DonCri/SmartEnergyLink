@@ -1,0 +1,14 @@
+{
+    "id": "{7A87FC64-265F-5BA6-05FC-7BFBE2354D52}",
+    "name": "SmartEnergyLink",
+    "type": 3,
+    "vendor": "",
+    "aliases": [
+        ""
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "DC",
+    "url": ""
+}

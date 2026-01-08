@@ -1,0 +1,13 @@
+{
+    "translations": {
+        "de": {
+            "Energy consumption total:": "Energieverbrauch total:",
+            "Energy consumption today:": "Energieverbrauch Tag:",
+            "Energy consumption last 15 min.:": "Energieverbrauch der letzten 15 Min.:",
+            "Solar energy total": "Solarenergie total",
+            "Solar energy today": "Solarenergie heute",
+            "Percentage share of solar energy total": "Totaler prozentualer Anteil an Solarenergie",
+            "Percentage share of solar energy today": "Heutiger prozentualer Anteil an Solarenergie"
+        }
+    }
+}
