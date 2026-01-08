@@ -22,8 +22,8 @@ declare(strict_types=1);
 			$this->RegisterVariableFloat("ENERGY_SUMMARY", $this->Translate("Energy consumption total:"), "", 0);
 			$this->RegisterVariableFloat("SOLAR_ENERGY_TOTAL", $this->Translate("Solar energy total"), "", 1);
 			$this->RegisterVariableFloat("SOLAR_ENERGY_TOTAL_PERCENT", $this->Translate("Percentage share of solar energy total"), "", 2);
-			$this->RegisterVariableFloat("ENERGY_DAY", $this->Translate("Energy consumption today:"), "", 3);
-			$this->RegisterVariableFloat("SOLAR_ENERGY_DAY", $this->Translate("Solar energy today"), "", 4);
+			$this->RegisterVariableFloat("ENERGY_TODAY", $this->Translate("Energy consumption today:"), "", 3);
+			$this->RegisterVariableFloat("SOLAR_ENERGY_TODAY", $this->Translate("Solar energy today"), "", 4);
 			$this->RegisterVariableFloat("SOLAR_ENERGY_TODAY_PERCENT", $this->Translate("Percentage share of solar energy today"), "", 5);
 			// $this->RegisterVariableString("ENERGY_LAST_15_MIN", $this->Translate("Energy consumption last 15 min.:"), "", 0);
 		}
@@ -105,7 +105,7 @@ declare(strict_types=1);
 			} else {
 				$jsonResponse = json_decode($response, true);
 			}
-			IPS_LogMessage("Smart Energy Link", $jsonResponse);
+			IPS_LogMessage("Smart Energy Link", $response);
 			return $jsonResponse;
 		}
 
