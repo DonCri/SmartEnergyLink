@@ -9,7 +9,7 @@ declare(strict_types=1);
 			parent::Create();
 
 			// Propertys
-			$this->RegisterPropertyString("LoginEmail", "");
+			$this->RegisterPropertyString("LoginMail", "");
 			$this->RegisterPropertyString("Password", "");
 			$this->RegisterPropertyString("Start_Year", "");
 			$this->RegisterPropertyString("Start_Month", "");
