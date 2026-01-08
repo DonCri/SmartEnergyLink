@@ -76,6 +76,8 @@ declare(strict_types=1);
 
 		private function GetContent(string $link) {
 
+			$auth = $this->Login();
+
 			$curl = curl_init();
 
 			curl_setopt_array($curl, [
@@ -88,7 +90,7 @@ declare(strict_types=1);
 				CURLOPT_CUSTOMREQUEST => "GET",
 				CURLOPT_HTTPHEADER => [
 					"Content-Type: application/json",
-					$this->Login(),
+					$auth,
 				],
 			]);
 
