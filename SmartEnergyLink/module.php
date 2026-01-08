@@ -76,7 +76,7 @@ declare(strict_types=1);
 
 		private function GetContent(string $link) {
 
-			$auth = $this->Login();
+			$auth = "Authorization: JWT " . $this->Login();
 			$postfields = "";
 
 			$curl = curl_init();
