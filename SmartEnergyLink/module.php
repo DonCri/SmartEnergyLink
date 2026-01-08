@@ -103,7 +103,7 @@ declare(strict_types=1);
 			} else {
 				$jsonResponse = json_decode($response, true);
 			}
-			
+			IPS_LogMessage("Smart Energy Link", $jsonResponse);
 			return $jsonResponse;
 		}
 
