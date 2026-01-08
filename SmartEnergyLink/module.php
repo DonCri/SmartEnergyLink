@@ -16,7 +16,7 @@ declare(strict_types=1);
 			$this->RegisterPropertyString("Start_Day", "");
 			
 			// Timer
-			$this->RegisterTimer("GET_CONTENT", 900000, "DC_Login();");
+			$this->RegisterTimer("GET_CONTENT", 900000, "DC_GetEnergySummary();");
 
 			// Variable
 			$this->RegisterVariableFloat("ENERGY_SUMMARY", $this->Translate("Energy consumption total:"), "", 0);
@@ -70,7 +70,7 @@ declare(strict_types=1);
 			} else {
 				$jsonResponse = json_decode($response, true);
 			}
-			
+			IPS_LogMessage("Smart Energy Link", "Token: " . $jsonResponse["access"]);
 			return $jsonResponse["access"];
 		}
 
