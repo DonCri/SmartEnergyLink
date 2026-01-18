@@ -1,136 +1,142 @@
 <?php
 
 declare(strict_types=1);
-	class SmartEnergyLink extends IPSModule
-	{
-		public function Create()
-		{
-			//Never delete this line!
-			parent::Create();
+class SmartEnergyLink extends IPSModule
 
-			// Propertys
-			$this->RegisterPropertyString("LoginMail", "");
-			$this->RegisterPropertyString("Password", "");
-			$this->RegisterPropertyString("Start_Year", "");
-			$this->RegisterPropertyString("Start_Month", "");
-			$this->RegisterPropertyString("Start_Day", "");
-			
-			// Timer
-			$this->RegisterTimer("GET_CONTENT", 900000, "DC_GetEnergySummary();");
+// My Energy SmartLink
+{
+  public function Create()
+  {
+    //Never delete this line!
+    parent::Create();
 
-			// Variable
-			$this->RegisterVariableFloat("ENERGY_SUMMARY", $this->Translate("Energy consumption total:"), "", 0);
-			$this->RegisterVariableFloat("SOLAR_ENERGY_TOTAL", $this->Translate("Solar energy total"), "", 1);
-			$this->RegisterVariableFloat("SOLAR_ENERGY_TOTAL_PERCENT", $this->Translate("Percentage share of solar energy total"), "", 2);
-			$this->RegisterVariableFloat("ENERGY_TODAY", $this->Translate("Energy consumption today:"), "", 3);
-			$this->RegisterVariableFloat("SOLAR_ENERGY_TODAY", $this->Translate("Solar energy today"), "", 4);
-			$this->RegisterVariableFloat("SOLAR_ENERGY_TODAY_PERCENT", $this->Translate("Percentage share of solar energy today"), "", 5);
-			// $this->RegisterVariableString("ENERGY_LAST_15_MIN", $this->Translate("Energy consumption last 15 min.:"), "", 0);
-		}
+    // Propertys
+    $this->RegisterPropertyString("LoginMail", "");
+    $this->RegisterPropertyString("Password", "");
+    $this->RegisterPropertyString("Start_Year", "");
+    $this->RegisterPropertyString("Start_Month", "");
+    $this->RegisterPropertyString("Start_Day", "");
 
-		public function Destroy()
-		{
-			//Never delete this line!
-			parent::Destroy();
-		}
+    // Timer
+    $this->RegisterTimer("GET_CONTENT", 900000, "DC_GetEnergySummary();");
 
-		public function ApplyChanges()
-		{
-			//Never delete this line!
-			parent::ApplyChanges();
-		}
+    // Variable
+    $this->RegisterVariableFloat("ENERGY_SUMMARY", $this->Translate("Energy consumption total:"), "", 0);
+    $this->RegisterVariableFloat("SOLAR_ENERGY_TOTAL", $this->Translate("Solar energy total"), "", 1);
+    $this->RegisterVariableFloat("SOLAR_ENERGY_TOTAL_PERCENT", $this->Translate("Percentage share of solar energy total"), "", 2);
+    $this->RegisterVariableFloat("ENERGY_TODAY", $this->Translate("Energy consumption today:"), "", 3);
+    $this->RegisterVariableFloat("SOLAR_ENERGY_TODAY", $this->Translate("Solar energy today"), "", 4);
+    $this->RegisterVariableFloat("SOLAR_ENERGY_TODAY_PERCENT", $this->Translate("Percentage share of solar energy today"), "", 5);
+    // $this->RegisterVariableString("ENERGY_LAST_15_MIN", $this->Translate("Energy consumption last 15 min.:"), "", 0);
+  }
 
-		private function Login() {
-			$eMail = $this->ReadPropertyString("LoginMail");
-			$password = $this->ReadPropertyString("Password");
-			$postfields = json_encode(["email" => $eMail, "password" => $password]);
+  public function Destroy()
+  {
+    //Never delete this line!
+    parent::Destroy();
+  }
 
-			$curl = curl_init();
+  public function ApplyChanges()
+  {
+    //Never delete this line!
+    parent::ApplyChanges();
+  }
 
-			curl_setopt_array($curl, [
-				CURLOPT_URL => "https://portal.sel.energy/api/v1/auth/login/",
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "POST",
-				CURLOPT_POSTFIELDS => $postfields,
-				CURLOPT_HTTPHEADER => [
-					"Content-Type: application/json",
-				],
-			]);
+  private function Login()
+  {
+    $eMail = $this->ReadPropertyString("LoginMail");
+    $password = $this->ReadPropertyString("Password");
+    $postfields = json_encode(["email" => $eMail, "password" => $password]);
 
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-		
-			
-			if($err) {
-				print_r("Fetch error: " . $err);
-			} else {
-				$jsonResponse = json_decode($response, true);
-			}
-			IPS_LogMessage("Smart Energy Link", "Token: " . $jsonResponse["access"]);
-			return $jsonResponse["access"];
-		}
+    $curl = curl_init();
 
-		private function GetContent(string $link) {
+    curl_setopt_array($curl, [
+      CURLOPT_URL => "https://portal.sel.energy/api/v1/auth/login/",
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "POST",
+      CURLOPT_POSTFIELDS => $postfields,
+      CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json",
+      ],
+    ]);
 
-			$auth = "Authorization: JWT " . $this->Login();
-			$postfields = "";
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
 
-			$curl = curl_init();
 
-			curl_setopt_array($curl, [
-				CURLOPT_URL => "https://portal.sel.energy/api/v1/" . $link,
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "GET",
-        		CURLOPT_POSTFIELDS => $postfields,
-				CURLOPT_HTTPHEADER => [
-					"Content-Type: application/json",
-					$auth,
-				],
-			]);
+    if ($err) {
+      print_r("Fetch error: " . $err);
+    } else {
+      $jsonResponse = json_decode($response, true);
+    }
+    IPS_LogMessage("Smart Energy Link", "Token: " . $jsonResponse["access"]);
+    return $jsonResponse["access"];
+  }
 
-			$response = curl_exec($curl);
-			$err = curl_error($curl);
-		
-			
-			if($err) {
-				print_r("Fetch error: " . $err);
-			} else {
-				$jsonResponse = json_decode($response, true);
-			}
-			IPS_LogMessage("Smart Energy Link", $response);
-			return $jsonResponse;
-		}
+  private function GetContent(string $link)
+  {
 
-		public function GetEnergySummary() {
-			$startYear = $this->ReadPropertyString("Start_Year");
-			$startMonth = $this->ReadPropertyString("Start_Month");
-			$startDay = $this->ReadPropertyString("Start_Day");
+    $auth = "Authorization: JWT " . $this->Login();
+    $postfields = "";
 
-			$currentYear = date("Y");
-			$currentMonth = date("m");
-			$currentDay = date("d");
-			$energySummary = $this->GetContent("sel/member-autarchy-electricity/?from={$startYear}-{$startMonth}-{$startDay}&to={$currentYear}-{$currentMonth}-{$currentDay}&ts_format=ms&community=548");
-			$this->SetValue("ENERGY_SUMMARY", $energySummary["summary"]["wattHours"]);
-			$this->SetValue("SOLAR_ENERGY_TOTAL", $energySummary["summary"]["ownConsumption"]);
-			$this->SetValue("SOLAR_ENERGY_TOTAL_PERCENT", $energySummary["summary"]["autarchy"]);
-		}
+    $curl = curl_init();
 
-		public function GetEnergyToday() {
-			$currentYear = date("Y");
-			$currentMonth = date("m");
-			$currentDay = date("d");
-			
-			$energyToday = $this->GetContent("sel/member-autarchy-electricity/?from={$currentYear}-{$currentMonth}-{$currentDay}&to={$currentYear}-{$currentMonth}-{$currentDay}&ts_format=ms&community=548");
-			$this->SetValue("ENERGY_TODAY", $energyToday["summary"]["wattHours"]);
-			$this->SetValue("SOLAR_ENERGY_TODAY", $energyToday["summary"]["ownConsumption"]);
-			$this->SetValue("SOLAR_ENERGY_TODAY_PERCENT", $energyToday["summary"]["autarchy"]);
-		}
-	}
+    curl_setopt_array($curl, [
+      CURLOPT_URL => "https://portal.sel.energy/api/v1/" . $link,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_POSTFIELDS => $postfields,
+      CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json",
+        $auth,
+      ],
+    ]);
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+
+    if ($err) {
+      print_r("Fetch error: " . $err);
+    } else {
+      $jsonResponse = json_decode($response, true);
+    }
+    IPS_LogMessage("Smart Energy Link", $response);
+    return $jsonResponse;
+  }
+
+  public function GetEnergySummary()
+  {
+    $startYear = $this->ReadPropertyString("Start_Year");
+    $startMonth = $this->ReadPropertyString("Start_Month");
+    $startDay = $this->ReadPropertyString("Start_Day");
+
+    $currentYear = date("Y");
+    $currentMonth = date("m");
+    $currentDay = date("d");
+    $energySummary = $this->GetContent("sel/member-autarchy-electricity/?from={$startYear}-{$startMonth}-{$startDay}&to={$currentYear}-{$currentMonth}-{$currentDay}&ts_format=ms&community=548");
+    $this->SetValue("ENERGY_SUMMARY", $energySummary["summary"]["wattHours"]);
+    $this->SetValue("SOLAR_ENERGY_TOTAL", $energySummary["summary"]["ownConsumption"]);
+    $this->SetValue("SOLAR_ENERGY_TOTAL_PERCENT", $energySummary["summary"]["autarchy"]);
+  }
+
+  public function GetEnergyToday()
+  {
+    $currentYear = date("Y");
+    $currentMonth = date("m");
+    $currentDay = date("d");
+
+    $energyToday = $this->GetContent("sel/member-autarchy-electricity/?from={$currentYear}-{$currentMonth}-{$currentDay}&to={$currentYear}-{$currentMonth}-{$currentDay}&ts_format=ms&community=548");
+    $this->SetValue("ENERGY_TODAY", $energyToday["summary"]["wattHours"]);
+    $this->SetValue("SOLAR_ENERGY_TODAY", $energyToday["summary"]["ownConsumption"]);
+    $this->SetValue("SOLAR_ENERGY_TODAY_PERCENT", $energyToday["summary"]["autarchy"]);
+  }
+}
